@@ -47,7 +47,7 @@ class CairoConan(ConanFile):
                 self.deps_cpp_info['freetype'].rootpath,)
                 }):
                 self.run('NOCONFIGURE=1 ./autogen.sh')
-                _args = ['--prefix=%s/builddir'%(os.getcwd()), '--libdir=%s/builddir/lib'%(os.getcwd())]
+                _args = ['--prefix=%s/builddir'%(os.getcwd()), '--libdir=%s/builddir/lib'%(os.getcwd()), '--enable-ft=yes']
                 if self.options.shared:
                     _args.extend(['--enable-shared=yes','--enable-static=no'])
                 else:
