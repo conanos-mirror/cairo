@@ -1,0 +1,12 @@
+diff -Nur cairo/meson.build cairo-meson/meson.build
+--- cairo/meson.build	2018-11-23 00:48:22.124279595 -0800
++++ cairo-meson/meson.build	2018-11-23 00:54:18.309103412 -0800
+@@ -151,7 +151,7 @@
+   endif
+ endif
+ 
+-freetype_required_version = '>= 9.7.3'
++freetype_required_version = '>= 2.9.1'
+ 
+ freetype_dep = dependency('freetype2',
+   required: false,
