@@ -11,7 +11,7 @@ class CairoConan(ConanFile):
     homepage = "https://cairographics.org/"
     license = "GNU LGPL 2.1"
     patch = "meson-build-freetype-version.patch"
-    patch_test = "cairo-test-constructors.patch"
+    patch_test = "cairo-test-constructors-gbk-error.patch"
     exports = ["COPYING",patch, patch_test]
     generators = "visual_studio", "gcc"
     settings = "os", "compiler", "build_type", "arch"
@@ -20,9 +20,6 @@ class CairoConan(ConanFile):
         "fPIC": [True, False],
     }
     default_options = { 'shared': False, 'fPIC': True }
-
-    #requires = ("glib/2.58.0@conanos/dev","libpng/1.6.34@conanos/dev","zlib/1.2.11@conanos/dev",
-    #"pixman/0.34.0@conanos/dev","fontconfig/2.12.6@conanos/dev","freetype/2.9.0@conanos/dev",)
 
     _source_subfolder = "source_subfolder"
     _build_subfolder = "build_subfolder"
