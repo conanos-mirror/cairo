@@ -1,0 +1,22 @@
+Binary files cairo/.git/index and cairo-test-constructors/.git/index differ
+diff -Nur cairo/test/meson.build cairo-test-constructors/test/meson.build
+--- cairo/test/meson.build	2018-11-25 23:28:43.339608137 -0800
++++ cairo-test-constructors/test/meson.build	2018-11-26 00:57:50.774004562 -0800
+@@ -170,7 +170,7 @@
+   'infinite-join.c',
+   'in-fill-empty-trapezoid.c',
+   'in-fill-trapezoid.c',
+-  'invalid-matrix.c',
++  #'invalid-matrix.c',
+   'inverse-text.c',
+   'inverted-clip.c',
+   'joins.c',
+@@ -330,7 +330,7 @@
+   'source-clip.c',
+   'source-clip-scale.c',
+   'source-surface-scale-paint.c',
+-  'spline-decomposition.c',
++  #'spline-decomposition.c',
+   'stride-12-image.c',
+   'stroke-pattern.c',
+   'subsurface.c',
