@@ -1,7 +1,7 @@
 #include <cstdlib>
 #include <iostream>
-#include <cairo.h>
-#include <cairo-version.h>
+#include <cairo/cairo.h>
+#include <cairo/cairo-version.h>
 
 int main()
 {
