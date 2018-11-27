@@ -60,32 +60,27 @@ class CairoConan(ConanFile):
         os.rename(self.name, self._source_subfolder)
         
     def build(self):
+        pkg_config_paths=[ os.path.join(self.deps_cpp_info[i].rootpath, "lib", "pkgconfig") for i in ["glib","libpng","zlib","pixman","fontconfig","freetype"] ]
+        prefix = os.path.join(self.build_folder, self._build_subfolder, "install")
+        meson = Meson(self)
+        include = [ os.path.join(self.deps_cpp_info[i].rootpath, "include") for i in ["fontconfig"] ]
+        libpath = [ os.path.join(self.deps_cpp_info[i].rootpath, "lib") for i in ["bzip2"] ]
         if self.settings.os == "Linux":
-            pkg_config_paths=[ os.path.join(self.deps_cpp_info[i].rootpath, "lib", "pkgconfig") for i in ["glib","libpng","zlib","pixman","fontconfig","freetype"] ]
             pkg_config_paths.extend([ os.path.join(self.deps_cpp_info[i].rootpath, "lib", "pkgconfig") for i in ["bzip2","libuuid"] ])
-            prefix = os.path.join(self.build_folder, self._build_subfolder, "install")
-            meson = Meson(self)
-            include = [ os.path.join(self.deps_cpp_info[i].rootpath, "include") for i in ["fontconfig"] ]
-            include.extend( [ os.path.join(self.deps_cpp_info[i].rootpath, "include","freetype2") for i in ["freetype"] ] )
-            libpath = " ".join( [ "-L"+os.path.join(self.deps_cpp_info[i].rootpath, "lib") for i in ["fontconfig","freetype"] ] )
-            libs = " ".join( [ "-l"+i for i in ["fontconfig","freetype"] ] )
-            ldpath = [ os.path.join(self.deps_cpp_info[i].rootpath, "lib") for i in ["bzip2"] ]
+            include.extend( [ os.path.join(self.deps_cpp_info["freetype"].rootpath, "include","freetype2") ] )
             with tools.environment_append({
                 "C_INCLUDE_PATH" : include,
-                "LD_LIBRARY_PATH" : os.pathsep.join(ldpath)
+                "LD_LIBRARY_PATH" : os.pathsep.join(libpath)
                 }):
-                meson.configure(defs={'prefix' : prefix},
+                meson.configure(defs={'prefix' : prefix, 'libdir':'lib'},
                                 source_dir=self._source_subfolder, build_dir=self._build_subfolder,
                                 pkg_config_paths=pkg_config_paths)
                 meson.build()
                 self.run('ninja -C {0} install'.format(meson.build_dir))
         
         if self.settings.os == 'Windows':
-            pkg_config_paths=[ os.path.join(self.deps_cpp_info[i].rootpath, "lib", "pkgconfig") for i in ["glib","libpng","zlib","pixman","fontconfig","freetype","expat"] ]
-            prefix = os.path.join(self.build_folder, self._build_subfolder, "install")
-            libpath = [ os.path.join(self.deps_cpp_info[i].rootpath, "lib") for i in ["libpng","bzip2","zlib", "expat"] ]
-            include = [ os.path.join(self.deps_cpp_info[i].rootpath, "include") for i in ["fontconfig"] ]
-            meson = Meson(self)
+            pkg_config_paths.extend([ os.path.join(self.deps_cpp_info["expat"].rootpath, "lib", "pkgconfig") ])
+            libpath.extend( [ os.path.join(self.deps_cpp_info[i].rootpath, "lib") for i in ["libpng","zlib", "expat"] ] )
             with tools.environment_append({
                 "INCLUDE" : os.pathsep.join(include + [os.getenv('INCLUDE')]),
                 'LIB'  : os.pathsep.join(libpath + [os.getenv('LIB')]),
