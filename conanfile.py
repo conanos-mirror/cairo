@@ -36,10 +36,11 @@ class CairoConan(ConanFile):
     
     def build_requirements(self):
         self.build_requires("bzip2/1.0.6@conanos/stable")
+        self.build_requires("libffi/3.299999@conanos/stable")
         if self.settings.os == "Windows":
             self.build_requires("expat/2.2.5@conanos/stable")
         if self.settings.os == "Linux":
-            self.build_requires("libuuid/1.0.3@bincrafters/stable")
+            self.build_requires("libuuid/1.0.3@conanos/stable")
 
 
     def config_options(self):
@@ -60,7 +61,7 @@ class CairoConan(ConanFile):
         os.rename(self.name, self._source_subfolder)
         
     def build(self):
-        pkg_config_paths=[ os.path.join(self.deps_cpp_info[i].rootpath, "lib", "pkgconfig") for i in ["glib","libpng","zlib","pixman","fontconfig","freetype"] ]
+        pkg_config_paths=[ os.path.join(self.deps_cpp_info[i].rootpath, "lib", "pkgconfig") for i in ["glib","libpng","zlib","pixman","fontconfig","freetype","libffi"] ]
         prefix = os.path.join(self.build_folder, self._build_subfolder, "install")
         meson = Meson(self)
         include = [ os.path.join(self.deps_cpp_info[i].rootpath, "include") for i in ["fontconfig"] ]
