@@ -19,7 +19,7 @@ class CairoConan(ConanFile):
         "shared": [True, False],
         "fPIC": [True, False],
     }
-    default_options = { 'shared': False, 'fPIC': True }
+    default_options = { 'shared': True, 'fPIC': True }
 
     _source_subfolder = "source_subfolder"
     _build_subfolder = "build_subfolder"
@@ -32,7 +32,7 @@ class CairoConan(ConanFile):
         self.requires.add("fontconfig/2.13.0@conanos/stable")
         self.requires.add("freetype/2.9.1@conanos/stable")            
 
-        config_scheme(self)
+       
     
     def build_requirements(self):
         self.build_requires("bzip2/1.0.6@conanos/stable")
@@ -49,6 +49,8 @@ class CairoConan(ConanFile):
     
     def configure(self):
         del self.settings.compiler.libcxx
+
+        config_scheme(self)
 
     def source(self):
         url_ = "https://github.com/CentricularK/cairo.git"
